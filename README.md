@@ -3,6 +3,7 @@ couterm trojan for ubnt edge router 6P (mips64)
 
 # 安装步骤以及要求 (以ER-6P为例)
 1. 先设置 apt-get 的 source，然后安装supervisor
+```
 configure
 set system package repository wheezy components 'main contrib non-free' 
 set system package repository wheezy distribution wheezy 
@@ -11,6 +12,7 @@ commit ; save
 sudo -i
 apt-get update
 apt-get install git wget supervisor
+```
 
 2. 下载仓库文件并执行脚本
 
