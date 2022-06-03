@@ -117,11 +117,11 @@ set -e
 
 #del chnroute
 if ipset --list | grep -q 'chnlist'; then
-    ipset destroy chnlist > /dev/null
+    ipset destroy chnlist
 fi
 if iptables -t nat -L| grep -q $CHAIN_NAME; then
-iptables -t nat -F $CHAIN_NAME > /dev/null
-iptables -t nat -X $CHAIN_NAME > /dev/null
+iptables -t nat -F $CHAIN_NAME
+iptables -t nat -X $CHAIN_NAME
 fi
 echo 'Del_rules Done.'
 
@@ -160,10 +160,16 @@ iptables -t nat -A PREROUTING -p tcp -j $CHAIN_NAME
 echo 'iptables setting is done.'
 
 #supervisord
-sed -i "s|{DEFPATH}|$DEFPATH|g" conf.d/trojan-supervisord.conf
-sed -i "s|{configDEFPATH}|$CONFIGPATH|g" conf.d/trojan-supervisord.conf
-cp conf.d/trojan-supervisord.conf /etc/supervisor/conf.d/shadowsocks.conf
-supervisorctl shutdown ; supervisord
+sed -i "s|{path}|$DEFPATH|g" conf.d/trojan-supervisord.conf
+sed -i "s|{configpath}|$CONFIGPATH|g" conf.d/trojan-supervisord.conf
+test -d /var/log/supervisor || mkdir /var/log/supervisor
+test -f /etc/supervisor/conf.d/shadowsocks.conf && rm -f /etc/supervisor/conf.d/shadowsocks.conf
+cp -f conf.d/trojan-supervisord.conf /etc/supervisor/conf.d/shadowsocks.conf
+
+if ps aux | grep -q 'supervisord'; then
+supervisorctl shutdown
+fi
+supervisord
 
 #auto update chnipsets
 sed -i "s|# SERVER_IP|SERVER_IP=$SERVER_IP|g" iptables.sh
