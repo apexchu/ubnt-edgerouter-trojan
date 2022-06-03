@@ -154,10 +154,16 @@ iptables -t nat -A PREROUTING -p tcp -j $CHAIN_NAME
 echo 'iptables setting is done.'
 
 #supervisord
-sed -i "s|# SERVER_IP|SERVER_IP=$SERVER_IP|g" iptables.sh
 sed -i "s|{path}|$PATH|g" conf.d/trojan-supervisord.conf
 sed -i "s|{configpath}|$CONFPATH|g" conf.d/trojan-supervisord.conf
 cp conf.d/trojan-supervisord.conf /etc/supervisor/conf.d/shadowsocks.conf
 sudo supervisorctl shutdown ; sudo supervisord
+
+#auto update chnipsets
+sed -i "s|# SERVER_IP|SERVER_IP=$SERVER_IP|g" iptables.sh
+cp -f y iptables.sh $CONFPATH/trojan
+chown $RUNAS $CONFPATH/trojan/iptables.sh
+chmod +x $CONFPATH/trojan/iptables.sh
+sed '$a* 3 * * * $CONFPATH/trojan/iptables.sh add_rules' /etc/crontab
 
 echo "All Done"
