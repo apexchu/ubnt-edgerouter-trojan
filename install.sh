@@ -116,13 +116,13 @@ CHAIN_NAME='BYPASSLIST'
 set -e
 
 #del chnroute
-ipset destroy chnroute
+ipset destroy chnlist
 iptables -t nat -F $CHAIN_NAME
 iptables -t nat -X $CHAIN_NAME
 echo 'Del_rules Done.'
 
 # Add new ipset
-ipset destroy chnlist
+#ipset destroy chnlist
 ipset -N chnlist hash:net maxelem 65536
 
 echo 'ipset processing...'
