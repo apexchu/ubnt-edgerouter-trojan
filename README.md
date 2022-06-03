@@ -41,7 +41,7 @@ RETURN     tcp  --  anywhere             anywhere             match-set chnlist 
 
 4. 架构是mips64(适用ER-6P,ER-12P),其他架构需要自己编译。解压缩后移动到 /usr/bin/ 中或者 /usr/local/bin/ 确保 ss-redir ss-tunnel 可以直接执行。不知道自己是什么架构的输入 uname -a 查看
 
-#supervisord 操作帮助 
+# supervisord 操作帮助
 ```
 关闭supervisord： supervisorctl shutdown 
 启动关闭supervisord：supervisord
