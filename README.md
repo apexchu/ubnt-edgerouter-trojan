@@ -16,7 +16,7 @@ apt-get install git wget supervisor
 
 执行：cd ubnt-edgerouter-trojan && sudo bash ./install.sh
 
-3.按照提示填入服务器信息，等待脚本执行完毕后, 确认 iptables 写入成功
+3. 按照提示填入服务器信息，等待脚本执行完毕后, 确认 iptables 写入成功
 
 ```
 iptables -t nat -L
@@ -37,13 +37,12 @@ RETURN     all  --  anywhere             192.168.0.0/16
 RETURN     all  --  anywhere             base-address.mcast.net/4
 RETURN     all  --  anywhere             240.0.0.0/4
 RETURN     tcp  --  anywhere             anywhere             match-set chnlist dst
+```
 
 4. 架构是mips64(适用ER-6P,ER-12P),其他架构需要自己编译。解压缩后移动到 /usr/bin/ 中或者 /usr/local/bin/ 确保 ss-redir ss-tunnel 可以直接执行。不知道自己是什么架构的输入 uname -a 查看
 
-```
-uname -a
-```
-
 #supervisord 操作帮助 
+```
 关闭supervisord： supervisorctl shutdown 
 启动关闭supervisord：supervisord
+```
