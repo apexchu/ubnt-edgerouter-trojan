@@ -64,6 +64,7 @@ cp -f y conf.d/pdnsd.conf $CONFIGPATH/trojan
 
 #dnsmasq
 WORKDIR="$(mktemp -d)"
+SERVERS=(223.5.5.5)
 #create config directory and copy config files from conf.d
 echo "Downloading latest configurations..."
 git clone --depth=1 https://github.com/felixonmars/dnsmasq-china-list.git "$WORKDIR"
