@@ -17,6 +17,7 @@ green="\033[0;32m"
 end="\033[0m"
 echo -e "${green}服务器地址：$SERVER_IP"
 echo "端口："$SERVER_PORT
+echo "SSL域名："$SERVER_DOMAINAME
 echo -e "密码："$SERVER_PASS${end}
 echo "是否继续？"
 select yn in "Yes" "No"; do
