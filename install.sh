@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 #parameters initialisations
 read -p "请输入服务器地址: " SERVER_IP
 echo $SERVER_IP
@@ -113,6 +111,8 @@ echo "Downloading latest china ips"
 curl 'http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest' | grep ipv4 | grep CN | awk -F\| '{ printf("%s/%d\n", $4, 32-log($5)/log(2)) }' > cn_ipv4.list
 wait
 CHAIN_NAME='BYPASSLIST'
+
+set -e
 
 #del chnroute
 sudo ipset destroy chnroute
