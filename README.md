@@ -40,13 +40,12 @@ RETURN     all  --  anywhere             base-address.mcast.net/4
 RETURN     all  --  anywhere             240.0.0.0/4
 RETURN     tcp  --  anywhere             anywhere             match-set chnlist dst
 ```
-4. 修改 /etc/rc.local，确保重启后 1.自动更新 iptabless 
+4. 修改 /etc/rc.local，确保supervisord重启后能自动势行
 supervisord
 
 sleep 10
-/{yurconfigpath}/iptables.sh add_rules
 
-4. 架构是mips64(适用ER-6P,ER-12P),其他架构需要自己编译。解压缩后移动到 /usr/bin/ 中或者 /usr/local/bin/ 确保 ss-redir ss-tunnel 可以直接执行。不知道自己是什么架构的输入 uname -a 查看
+5. 架构是mips64(适用ER-6P,ER-12P),其他架构需要自己编译。解压缩后移动到 /usr/bin/ 中或者 /usr/local/bin/ 确保 ss-redir ss-tunnel 可以直接执行。不知道自己是什么架构的输入 uname -a 查看
 
 # supervisord 操作帮助
 ```
