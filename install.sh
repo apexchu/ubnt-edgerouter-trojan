@@ -116,12 +116,9 @@ CHAIN_NAME='BYPASSLIST'
 set -e
 
 #del chnroute
+#del chnlist
 if ipset --list | grep -q 'chnlist'; then
-    ipset destroy chnlist
-fi
-if iptables -t nat -L| grep -q $CHAIN_NAME; then
-iptables -t nat -F $CHAIN_NAME
-iptables -t nat -X $CHAIN_NAME
+    ipset flush chnlist
 fi
 echo 'Del_rules Done.'
 
@@ -146,6 +143,7 @@ do
 done
 echo 'ipset done.'
 
+if iptables -t nat -L| grep -q $CHAIN_NAME; then
 # 1. TCP
 # TCP new chain $CHAIN_NAME
 iptables -t nat -N $CHAIN_NAME
@@ -157,6 +155,7 @@ iptables -t nat -A $CHAIN_NAME -p tcp -j REDIRECT --to-ports 1234
 iptables -t nat -A PREROUTING -p tcp -j $CHAIN_NAME
 # For local
 #iptables -t nat -I OUTPUT -p tcp -j $CHAIN_NAME
+fi
 echo 'iptables setting is done.'
 
 #supervisord
