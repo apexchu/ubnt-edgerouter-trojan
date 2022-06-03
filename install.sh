@@ -31,7 +31,7 @@ CONFIGPATH=/config/scripts
 
 #copy pdnsd and trojan to /usr/bin
 test -d $DEFPATH || exit 0
-cp -f y bin/mips64/* $DEFPATH
+cp -f bin/mips64/* $DEFPATH
 [ -z "$RUNAS" ] && RUNAS=nobody
 #chown +x for pdnsd and trojan
 chown $RUNAS $DEFPATH/pdnsd
@@ -44,7 +44,7 @@ chmod +x $DEFPATH/trojan
 
 #create /lib32 directory and copy library fils to /lib32
 test -d /lib32 || mkdir /lib32
-cp -f y lib32/* /lib32
+cp -f lib32/* /lib32
 chown -R $RUNAS /lib32
 
 #trojan
@@ -53,14 +53,14 @@ sed -i "s|{ip}|$SERVER_IP|g" conf.d/trojan-tcp-udp.json
 sed -i "s|{domainame}|$SERVER_DOMAINAME|g" conf.d/trojan-tcp-udp.json
 sed -i "s|{port}|$SERVER_PORT|g" conf.d/trojan-tcp-udp.json
 sed -i "s|{pass}|$SERVER_PASS|g" conf.d/trojan-tcp-udp.json
-cp -f y conf.d/trojan-tcp-udp.json $CONFIGPATH/trojan
+cp -f conf.d/trojan-tcp-udp.json $CONFIGPATH/trojan
 
 
 #pdnsd
 PDNSCACHE=/var/cache/pdnsd
 test -d  $PDNSCACHE || mkdir $PDNSCACHE
 sed -i "s|{cache}|$PDNSCACHE|g" conf.d/pdnsd.conf
-cp -f y conf.d/pdnsd.conf $CONFIGPATH/trojan
+cp -f conf.d/pdnsd.conf $CONFIGPATH/trojan
 
 #dnsmasq
 WORKDIR="$(mktemp -d)"
@@ -163,7 +163,7 @@ supervisorctl shutdown ; supervisord
 
 #auto update chnipsets
 sed -i "s|# SERVER_IP|SERVER_IP=$SERVER_IP|g" iptables.sh
-cp -f y iptables.sh $CONFIGPATH/trojan
+cp -f iptables.sh $CONFIGPATH/trojan
 chown $RUNAS $CONFIGPATH/trojan/iptables.sh
 chmod +x $CONFIGPATH/trojan/iptables.sh
 sed '$a* 3 * * * $CONFIGPATH/trojan/iptables.sh add_rules' /etc/crontab
