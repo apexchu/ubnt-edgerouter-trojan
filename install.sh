@@ -172,7 +172,8 @@ fi
 supervisord
 
 #auto update chnipsets
-sed -i "s|# SERVER_IP|SERVER_IP=$SERVER_IP|g" iptables.sh
+sed -i "s|# CHAIN_NAME|CHAIN_NAME=$SERVER_IP|g" iptables.sh
+sed -i "s|# CHAIN_NAME|CHAIN_NAME=$CHAIN_NAME|g" iptables.sh
 cp -f iptables.sh $CONFIGPATH/trojan
 chown $RUNAS $CONFIGPATH/trojan/iptables.sh
 chmod +x $CONFIGPATH/trojan/iptables.sh
