@@ -36,9 +36,11 @@ cp -f y bin/mips64/* $PATH
 [ -z "$RUNAS" ] && RUNAS=nobody
 #chown +x for pdnsd and trojan
 chown $RUNAS $PATH/pdnsd
+chown $RUNAS $PATH/pdnsd-ctl
 chown $RUNAS $PATH/trojan
 #chown +x for pdnsd and trojan
 chmod +x $PATH/pdnsd
+chmod +x $PATH/pdnsd-ctl
 chmod +x $PATH/trojan
 
 #create /lib32 directory and copy library fils to /lib32
