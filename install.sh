@@ -45,7 +45,7 @@ chmod +x $DEFPATH/trojan
 #create /lib32 directory and copy library fils to /lib32
 test -d /lib32 || mkdir /lib32
 cp -f y lib32/* /lib32
-chown -r $RUNAS /lib32
+chown -R $RUNAS /lib32
 
 #trojan
 test -d $CONFIGPATH/trojan || mkdir $CONFIGPATH/trojan
