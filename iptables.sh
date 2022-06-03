@@ -11,7 +11,7 @@ add_rules()
 
     del_rules
     # Add new ipset
-    ipset destroy chnlist
+    #ipset destroy chnlist
     ipset -N chnlist hash:net maxelem 65536
 
     echo 'ipset processing...'
@@ -56,9 +56,13 @@ add_rules()
 
 del_rules()
 {
-    ipset destroy chnroute
-    iptables -t nat -F $CHAIN_NAME
-    iptables -t nat -X $CHAIN_NAME
+    if ipset --list | grep -q 'chnlist'; then
+        ipset destroy chnlist
+    fi
+    if iptables -t nat -L| grep -q $CHAIN_NAME; then
+        iptables -t nat -F $CHAIN_NAME
+        iptables -t nat -X $CHAIN_NAME
+    fi
     echo 'Del_rules Done.'
 }
 
