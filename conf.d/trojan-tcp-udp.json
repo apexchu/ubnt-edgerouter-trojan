@@ -1,0 +1,34 @@
+{
+   "log_level": 3,
+   "local_addr": "0.0.0.0",
+   "local_port": 1234,
+   "run_type": "nat",
+   "remote_port": {port},
+   "udp_timeout": 60,
+   "remote_addr": "{ip}",
+   "ssl": {
+     "verify_hostname": true,
+     "cert": "",
+     "sni": "{domainame}",
+     "session_ticket": true,
+     "reuse_session": true,
+     "curve": "",
+     "verify": true,
+     "alpn": [
+       "h2",
+       "http/1.1"
+     ],
+     "cipher": "ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-CHACHA20-POLY1305:ECDHE-RSA-CHACHA20-POLY1305:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-SHA:ECDHE-ECDSA->
+     "cipher_tls13": "TLS_AES_128_GCM_SHA256:TLS_CHACHA20_POLY1305_SHA256:TLS_AES_256_GCM_SHA384"
+   },
+   "tcp": {
+     "fast_open_qlen": 20,
+     "fast_open": true,
+     "keep_alive": true,
+     "reuse_port": true,
+     "no_delay": true
+   },
+   "password": [
+     "{pass}"
+   ]
+ }
