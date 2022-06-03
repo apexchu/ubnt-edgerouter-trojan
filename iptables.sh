@@ -51,19 +51,6 @@ add_rules()
     # For local
     #iptables -t nat -I OUTPUT -p tcp -j $CHAIN_NAME
 
-    # 2. UDP
-    # TCP new chain $CHAIN_NAME
-    iptables -t mangle -N $CHAIN_NAME
-    ip route add local default dev lo table 100
-    ip rule add fwmark 1 lookup 100
-
-    # UDP ipset match
-    iptables -t mangle -A $CHAIN_NAME -p udp -m set --match-set chnlist dst -j RETURN
-    iptables -t mangle -A $CHAIN_NAME -p udp -j TPROXY --on-port 1080 --tproxy-mark 0x01/0x01
-
-    # UDP rule to pretouting chain
-    iptables -t mangle -A PREROUTING -p udp -j $CHAIN_NAME
-
     echo 'Done.'
 }
 
