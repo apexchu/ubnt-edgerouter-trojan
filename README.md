@@ -44,5 +44,5 @@ RETURN     tcp  --  anywhere             anywhere             match-set chnlist 
 # supervisord 操作帮助
 ```
 关闭supervisord： supervisorctl shutdown 
-启动关闭supervisord：supervisord
+启动supervisord：supervisord
 ```
