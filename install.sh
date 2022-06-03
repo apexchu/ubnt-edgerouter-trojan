@@ -116,9 +116,13 @@ CHAIN_NAME='BYPASSLIST'
 set -e
 
 #del chnroute
-ipset destroy chnlist
-iptables -t nat -F $CHAIN_NAME
-iptables -t nat -X $CHAIN_NAME
+if ipset --list | grep -q 'chnlist'; then
+    ipset destroy chnlist > /dev/null
+fi
+if iptables -t nat -L| grep -q $CHAIN_NAME; then
+iptables -t nat -F $CHAIN_NAME > /dev/null
+iptables -t nat -X $CHAIN_NAME > /dev/null
+fi
 echo 'Del_rules Done.'
 
 # Add new ipset
