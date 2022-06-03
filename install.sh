@@ -26,21 +26,21 @@ select yn in "Yes" "No"; do
 done
 
 
-PATH=/usr/bin
-CONFPATH=/config/scripts
+DEFPATH=/usr/bin
+CONFIGPATH=/config/scripts
 
 #copy pdnsd and trojan to /usr/bin
-test -d $PATH || exit 0
-cp -f y bin/mips64/* $PATH
+test -d $DEFPATH || exit 0
+cp -f y bin/mips64/* $DEFPATH
 [ -z "$RUNAS" ] && RUNAS=nobody
 #chown +x for pdnsd and trojan
-chown $RUNAS $PATH/pdnsd
-chown $RUNAS $PATH/pdnsd-ctl
-chown $RUNAS $PATH/trojan
+chown $RUNAS $DEFPATH/pdnsd
+chown $RUNAS $DEFPATH/pdnsd-ctl
+chown $RUNAS $DEFPATH/trojan
 #chown +x for pdnsd and trojan
-chmod +x $PATH/pdnsd
-chmod +x $PATH/pdnsd-ctl
-chmod +x $PATH/trojan
+chmod +x $DEFPATH/pdnsd
+chmod +x $DEFPATH/pdnsd-ctl
+chmod +x $DEFPATH/trojan
 
 #create /lib32 directory and copy library fils to /lib32
 test -d /lib32 || mkdir /lib32
@@ -48,19 +48,19 @@ cp -f y lib32/* /lib32
 chown -r $RUNAS /lib32
 
 #trojan
-test -d $CONFPATH/trojan || mkdir $CONFPATH/trojan
+test -d $CONFIGPATH/trojan || mkdir $CONFIGPATH/trojan
 sed -i "s|{ip}|$SERVER_IP|g" conf.d/trojan-tcp-udp.json
 sed -i "s|{domainame}|$SERVER_DOMAINAME|g" conf.d/trojan-tcp-udp.json
 sed -i "s|{port}|$SERVER_PORT|g" conf.d/trojan-tcp-udp.json
 sed -i "s|{pass}|$SERVER_PASS|g" conf.d/trojan-tcp-udp.json
-cp -f y conf.d/trojan-tcp-udp.json $CONFPATH/trojan
+cp -f y conf.d/trojan-tcp-udp.json $CONFIGPATH/trojan
 
 
 #pdnsd
 PDNSCACHE=/var/cache/pdnsd
 test -d  $PDNSCACHE || mkdir $PDNSCACHE
 sed -i "s|{cache}|$PDNSCACHE|g" conf.d/pdnsd.conf
-cp -f y conf.d/pdnsd.conf $CONFPATH/trojan
+cp -f y conf.d/pdnsd.conf $CONFIGPATH/trojan
 
 #dnsmasq
 WORKDIR="$(mktemp -d)"
@@ -155,16 +155,16 @@ iptables -t nat -A PREROUTING -p tcp -j $CHAIN_NAME
 echo 'iptables setting is done.'
 
 #supervisord
-sed -i "s|{path}|$PATH|g" conf.d/trojan-supervisord.conf
-sed -i "s|{configpath}|$CONFPATH|g" conf.d/trojan-supervisord.conf
+sed -i "s|{DEFPATH}|$DEFPATH|g" conf.d/trojan-supervisord.conf
+sed -i "s|{configDEFPATH}|$CONFIGPATH|g" conf.d/trojan-supervisord.conf
 cp conf.d/trojan-supervisord.conf /etc/supervisor/conf.d/shadowsocks.conf
 supervisorctl shutdown ; supervisord
 
 #auto update chnipsets
 sed -i "s|# SERVER_IP|SERVER_IP=$SERVER_IP|g" iptables.sh
-cp -f y iptables.sh $CONFPATH/trojan
-chown $RUNAS $CONFPATH/trojan/iptables.sh
-chmod +x $CONFPATH/trojan/iptables.sh
-sed '$a* 3 * * * $CONFPATH/trojan/iptables.sh add_rules' /etc/crontab
+cp -f y iptables.sh $CONFIGPATH/trojan
+chown $RUNAS $CONFIGPATH/trojan/iptables.sh
+chmod +x $CONFIGPATH/trojan/iptables.sh
+sed '$a* 3 * * * $CONFIGPATH/trojan/iptables.sh add_rules' /etc/crontab
 
 echo "All Done"
