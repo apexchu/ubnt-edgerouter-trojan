@@ -166,7 +166,7 @@ test -d /var/log/supervisor || mkdir /var/log/supervisor
 test -f /etc/supervisor/conf.d/shadowsocks.conf && rm -f /etc/supervisor/conf.d/shadowsocks.conf
 cp -f conf.d/trojan-supervisord.conf /etc/supervisor/conf.d/shadowsocks.conf
 
-if ps aux | grep -q 'supervisord'; then
+if ps aux | grep 'supervisord' > /dev/null; then
 supervisorctl shutdown
 fi
 supervisord
