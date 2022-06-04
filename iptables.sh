@@ -41,7 +41,7 @@ add_rules()
         # TCP ipset match
         iptables -t nat -A $CHAIN_NAME -p tcp -m set --match-set chnlist dst -j RETURN
         # TCP redirect
-        iptables -t nat -A $CHAIN_NAME -p tcp -j REDIRECT --to-ports 1080
+        iptables -t nat -A $CHAIN_NAME -p tcp -j REDIRECT --to-ports 1234
         # TCP rule to prerouting chain
         iptables -t nat -A PREROUTING -p tcp -j $CHAIN_NAME
         # For local
