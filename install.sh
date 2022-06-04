@@ -122,7 +122,7 @@ if ipset --list | grep 'chnlist' > /dev/null; then
 else
     ipset -N chnlist hash:net maxelem 65536
 fi
-echo 'Ipset chnlist initinitalize Done.'
+echo 'ipset chnlist initialization Done.'
 
 # Add new ipset
 #ipset destroy chnlist
