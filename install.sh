@@ -143,7 +143,7 @@ do
 done
 echo 'ipset done.'
 
-if iptables -t nat -L| grep -q $CHAIN_NAME; then
+if ! iptables -t nat -L| grep $CHAIN_NAME >/dev/null; then
 # 1. TCP
 # TCP new chain $CHAIN_NAME
 iptables -t nat -N $CHAIN_NAME
