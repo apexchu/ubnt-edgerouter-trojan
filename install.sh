@@ -117,14 +117,15 @@ set -e
 
 #del chnroute
 #del chnlist
-if ipset --list | grep -q 'chnlist'; then
+if ipset --list | grep 'chnlist' > /dev/null; then
     ipset flush chnlist
+else
+    ipset -N chnlist hash:net maxelem 65536
 fi
-echo 'Del_rules Done.'
+echo 'Ipset chnlist initinitalize Done.'
 
 # Add new ipset
 #ipset destroy chnlist
-ipset -N chnlist hash:net maxelem 65536
 
 echo 'ipset processing...'
 ipset add chnlist $SERVER_IP
