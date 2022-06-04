@@ -9,10 +9,12 @@ add_rules()
     wait
     CHAIN_NAME='BYPASSLIST'
 
-    del_rules
-    # Add new ipset
-    #ipset destroy chnlist
-    ipset -N chnlist hash:net maxelem 65536
+    #ipset chnlist initialize
+    if ipset --list | grep 'chnlist' > /dev/null; then
+        ipset flush chnlist
+    else
+        ipset -N chnlist hash:net maxelem 65536
+    fi
 
     echo 'ipset processing...'
     ipset add chnlist $SERVER_IP
@@ -29,29 +31,24 @@ add_rules()
     do
         ipset add chnlist $ip
     done
+    
     echo 'ipset done.'
 
-    # Add server IP
-    if [ -n "$SERVER_IP" ]
-    then
-        echo "Your server IP is $SERVER_IP"
-    else
-        read -p "Please set server IP:" SERVER_IP
+    if ! iptables -t nat -L| grep $CHAIN_NAME >/dev/null; then
+        # 1. TCP
+        # TCP new chain $CHAIN_NAME
+        iptables -t nat -N $CHAIN_NAME
+        # TCP ipset match
+        iptables -t nat -A $CHAIN_NAME -p tcp -m set --match-set chnlist dst -j RETURN
+        # TCP redirect
+        iptables -t nat -A $CHAIN_NAME -p tcp -j REDIRECT --to-ports 1080
+        # TCP rule to prerouting chain
+        iptables -t nat -A PREROUTING -p tcp -j $CHAIN_NAME
+        # For local
+        #iptables -t nat -I OUTPUT -p tcp -j $CHAIN_NAME
     fi
 
-    # 1. TCP
-    # TCP new chain $CHAIN_NAME
-    iptables -t nat -N $CHAIN_NAME
-    # TCP ipset match
-    iptables -t nat -A $CHAIN_NAME -p tcp -m set --match-set chnlist dst -j RETURN
-    # TCP redirect
-    iptables -t nat -A $CHAIN_NAME -p tcp -j REDIRECT --to-ports 1080
-    # TCP rule to prerouting chain
-    iptables -t nat -A PREROUTING -p tcp -j $CHAIN_NAME
-    # For local
-    #iptables -t nat -I OUTPUT -p tcp -j $CHAIN_NAME
-
-    echo 'Done.'
+        echo 'Done.'
 }
 
 del_rules()
